@@ -6,27 +6,26 @@ import { object, string } from "yup"
 
 export const registerSchema = object({
   username: string()
-    .max(20, "Kullanıcı adı 10 karakterden az olmalıdır.")
-    .required("Kullanıcı adı zorunludur"),
+    .max(20, "Username must be less than 20 characters.")
+    .required("Username is required"),
   firstName: string()
-    .max(20, "İsim 20 karakterden az olmalıdır.")
-    .required("İsim zorunludur"),
+    .max(20, "First name must be less than 20 characters.")
+    .required("First name is required"),
   lastName: string()
-    .max(20, "Soyisim 30 karakterden az olmalıdır.")
-    .required("Soyisim zorunludur"),
-
+    .max(20, "Last name must be less than 20 characters.")
+    .required("Last name is required"),
   email: string()
-    .email("Lütfen geçerli bir email giriniz.")
-    .required("Email zorunludur"),
+    .email("Please enter a valid email.")
+    .required("Email is required"),
   password: string()
-    .required("Şifre zorunludur")
-    .min(8, "Şifre en az 8 karakter olmalıdır")
-    .max(20, "Şifre en fazla 20 karakter olmalıdır")
-    .matches(/\d+/, "Şifre bir sayı içermelidir")
-    .matches(/[a-z]/, "Şifre bir küçük harf içermelidir")
-    .matches(/[A-Z]/, "Şifre bir büyük harf içermelidir")
-    .matches(/[!/[@$!%*?&]+/, "Şifre bir özel karakter içermelidir"),
-})
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters long")
+    .max(20, "Password must be no more than 20 characters long")
+    .matches(/\d+/, "Password must contain a number")
+    .matches(/[a-z]/, "Password must contain a lowercase letter")
+    .matches(/[A-Z]/, "Password must contain an uppercase letter")
+    .matches(/[!@#$%^&*(),.?":{}|<>]+/, "Password must contain a special character"),
+});
 
 const RegisterForm = ({
   values,
@@ -98,7 +97,7 @@ const RegisterForm = ({
           error={touched.password && Boolean(errors.password)}
           helperText={errors.password}
         />
-        <Button type="submit" variant="contained" size="large">
+        <Button type="submit" variant="contained" size="large" color="primary" sx={{ mt: 2, backgroundColor: '#0CC0DF' }}>
           Submit
         </Button>
       </Box>
