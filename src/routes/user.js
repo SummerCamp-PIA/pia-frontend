@@ -14,6 +14,7 @@ router.route('/')
     .get(permissions.isLogin, user.list)
     .post(user.create)
 
+
 router.route('/:id')
     .get(permissions.isLogin, user.read)
     .put(permissions.isLogin, user.update)
