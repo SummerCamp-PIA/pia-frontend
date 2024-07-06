@@ -9,6 +9,8 @@ import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 import RegisterForm, { registerSchema } from "../components/RegisterForm";
 import { Formik } from "formik";
+import profilePic from '../assets/images/logo.png';
+
 
 const Register = () => {
   const handleRegister = async (values) => {
@@ -53,7 +55,7 @@ const Register = () => {
         <Grid item xs={12} sm={10} md={6}>
           <Avatar
             sx={{
-              backgroundColor: "secondary.light",
+              backgroundColor: "#0CC0DF",
               m: "auto",
               width: 40,
               height: 40,
@@ -65,7 +67,7 @@ const Register = () => {
             variant="h4"
             align="center"
             mb={2}
-            color="secondary.light"
+            sx={{ color: '#0CC0DF' }}
           >
             Register
           </Typography>
@@ -88,13 +90,22 @@ const Register = () => {
           ></Formik>
 
           <Box sx={{ textAlign: "center", mt: 2 }}>
-            <Link to="/login">Do you have an account?</Link>
+            <Link to="/login" style={{ 
+              color: '#0CC0DF', 
+              backgroundColor: '#ffcb96', 
+              padding: '5px', 
+              borderRadius: '5px' ,
+              fontWeight: 'bold' 
+               }}
+               >Do you have an account?</Link>
           </Box>
         </Grid>
 
         <Grid item xs={0} sm={7} md={6}>
           <Container>
-            <img src={image} alt="" />
+          <img src={profilePic} alt="Profile"
+           style={{  marginLeft: '-150px'}} 
+          />
           </Container>
         </Grid>
       </Grid>

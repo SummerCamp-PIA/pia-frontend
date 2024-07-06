@@ -33,10 +33,31 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+   
 }
 
 .error {
     color: red;
     margin-bottom: 15px;
 }
+
+
+.custom-link {
+    color: #0CC0DF;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .custom-link:hover {
+    text-decoration: underline;
+  }
+
+  .login-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .image-container {
+    margin-top: 20px; 
+  }
