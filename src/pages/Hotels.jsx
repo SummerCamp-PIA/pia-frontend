@@ -1,16 +1,18 @@
 import React from 'react'
-import HomeCard from '../components/HomeCard'
 import NavBar from '../components/NavBar'
+import HomeFilter from '../components/HomeFilter'
 import Footer from '../components/Footer'
+import HotelList from '../components/HotelList'
 
-function Home() {
+function Hotels() {
     return (
         <div>
             <NavBar />
-            <HomeCard />
+            <HomeFilter />
+            <HotelList />
             <Footer />
         </div>
     )
 }
 
-export default Home
+export default Hotels

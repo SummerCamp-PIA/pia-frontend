@@ -1,0 +1,54 @@
+/* FilterComponent.css */
+
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.filter-input, .filter-select, .filter-multi-select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 200px;
+}
+
+.filter-select, .filter-multi-select {
+  width: 220px;
+}
+
+.filter-occupancy {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.filter-button-search {
+  background-color: #4caf50;
+  color: white;
+}
+
+.filter-button-clear {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+.filter-button-search:hover {
+  background-color: #45a049;
+}
+
+.filter-button-clear:hover {
+  background-color: #ec971f;
+}
