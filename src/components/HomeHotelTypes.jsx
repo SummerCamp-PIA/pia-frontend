@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/HomeHotelType.css';
 
+//Statik olcak
+
 const hotels = [
   { id: 1, name: 'Honeymoon Hotels', image: 'images/hotels/hotel.jpeg' },
   { id: 2, name: 'Discounted Hotels', image: 'discounted-hotel.jpg' },

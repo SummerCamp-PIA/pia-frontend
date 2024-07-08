@@ -17,7 +17,7 @@ const HomeFilter = () => {
     propertyType: '',
     amenities: []
   });
-  const [priceError, setPriceError] = useState('');
+  const [error, setError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const typingTimer = useRef(null);
 
@@ -48,6 +48,10 @@ const HomeFilter = () => {
         validatePriceRange();
       }, 2000); // 2 saniye bekleme süresi
     }
+
+    if (name === 'checkIn' || name === 'checkOut') {
+      validateDates(name, value);
+    }
   };
 
   const validatePriceRange = () => {
@@ -55,10 +59,47 @@ const HomeFilter = () => {
 
     if (minPrice && maxPrice) {
       if (parseFloat(minPrice) > parseFloat(maxPrice)) {
-        setPriceError('Minimum price should be less than or equal to maximum price.');
+        setError('Minimum price should be less than or equal to maximum price.');
         setIsModalOpen(true);
       } else {
-        setPriceError('');
+        setError('');
+        setIsModalOpen(false);
+      }
+    }
+  };
+
+  const validateDates = (name, value) => {
+    const { checkIn, checkOut } = filters;
+    const today = new Date();
+    const checkInDate = new Date(checkIn);
+    const checkOutDate = new Date(checkOut);
+    const newDate = new Date(value);
+
+    if (name === 'checkIn') {
+      if (newDate < today.setHours(0, 0, 0, 0)) {
+        setError('Check-in date cannot be in the past.');
+        setIsModalOpen(true);
+      } else if (checkOut && newDate > checkOutDate) {
+        setError('Check-in date should be before check-out date.');
+        setIsModalOpen(true);
+      } else {
+        setError('');
+        setIsModalOpen(false);
+      }
+    }
+
+    if (name === 'checkOut') {
+      if (newDate < today.setHours(0, 0, 0, 0)) {
+        setError('Check-out date cannot be in the past.');
+        setIsModalOpen(true);
+      } else if (checkIn && newDate < checkInDate) {
+        setError('Check-out date should be after check-in date.');
+        setIsModalOpen(true);
+      } else if (newDate.toDateString() === checkInDate.toDateString()) {
+        setError('Check-in and check-out dates cannot be the same.');
+        setIsModalOpen(true);
+      } else {
+        setError('');
         setIsModalOpen(false);
       }
     }
@@ -73,7 +114,7 @@ const HomeFilter = () => {
   };
 
   const handleSubmit = () => {
-    if (priceError) {
+    if (error) {
       setIsModalOpen(true);
       return;
     }
@@ -98,11 +139,11 @@ const HomeFilter = () => {
       adults: '',
       minPrice: '',
       maxPrice: '',
-      accommodationType: [],
-      propertyType: [],
+      accommodationType: '',
+      propertyType: '',
       amenities: []
     });
-    setPriceError('');
+    setError('');
     setIsModalOpen(false);
   };
 
@@ -191,9 +232,9 @@ const HomeFilter = () => {
       <button className="filter-button filter-button-search" onClick={handleSubmit}>SEARCH</button>
       <button className="filter-button filter-button-clear" onClick={handleClearFilters}>Clear Filters</button>
 
-      <Modal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} contentLabel="Price Error" className="price-error-modal">
+      <Modal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} contentLabel="Error" className="price-error-modal">
         <div className="modal-content">
-          <p>{priceError}</p>
+          <p>{error}</p>
           <button onClick={() => setIsModalOpen(false)}>Close</button>
         </div>
       </Modal>

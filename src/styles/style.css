@@ -11,7 +11,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #333;
+  background-color: #0A9CC0;
   color: #fff;
   padding: 10px 20px;
   z-index: 1000; /* Diğer içeriklerin üzerinde olacak */
@@ -44,7 +44,7 @@ body {
 
 /* Footer */
 .footer {
-  background-color: #333;
+  background-color: #0A9CC0;
   color: #fff;
   padding: 20px;
   display: flex;
@@ -84,6 +84,14 @@ body {
   margin-right: 20px;
 }
 
+.about-us  {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s;
+}
 .kvkk-popup {
   position: fixed;
   top: 50%;
@@ -103,9 +111,27 @@ body {
 }
 
 .kvkk-link {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s;
   cursor: pointer;
-  text-decoration: underline;
 }
+.kvkk-link:hover {
+  background-color: white;
+  color: #0CC0DF;
+  transform: scale(1.05);
+}
+
+/* Linklerin active efekti */
+.kvkk-link:active {
+  background-color: #0A9CC0;
+  color: white;
+  transform: scale(1);
+}
+
 
 /* Responsive Tasarım */
 @media (max-width: 768px) {
@@ -122,4 +148,6 @@ body {
     margin-right: 0;
     margin-bottom: 5px;
   }
+
+  
 }
