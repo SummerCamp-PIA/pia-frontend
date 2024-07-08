@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import Select from 'react-select';
+import Modal from 'react-modal';
 import '../styles/HomeFilter.css';
 
 const HomeFilter = () => {
@@ -16,6 +17,9 @@ const HomeFilter = () => {
     propertyType: '',
     amenities: []
   });
+  const [priceError, setPriceError] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const typingTimer = useRef(null);
 
   const accommodationOptions = [
     { value: 'hotel', label: 'Hotel' },
@@ -35,7 +39,29 @@ const HomeFilter = () => {
   ];
 
   const handleChange = (e) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFilters({ ...filters, [name]: value });
+
+    if (name === 'minPrice' || name === 'maxPrice') {
+      clearTimeout(typingTimer.current);
+      typingTimer.current = setTimeout(() => {
+        validatePriceRange();
+      }, 2000); // 2 saniye bekleme süresi
+    }
+  };
+
+  const validatePriceRange = () => {
+    const { minPrice, maxPrice } = filters;
+
+    if (minPrice && maxPrice) {
+      if (parseFloat(minPrice) > parseFloat(maxPrice)) {
+        setPriceError('Minimum price should be less than or equal to maximum price.');
+        setIsModalOpen(true);
+      } else {
+        setPriceError('');
+        setIsModalOpen(false);
+      }
+    }
   };
 
   const handleSelectChange = (selectedOptions, action) => {
@@ -47,6 +73,11 @@ const HomeFilter = () => {
   };
 
   const handleSubmit = () => {
+    if (priceError) {
+      setIsModalOpen(true);
+      return;
+    }
+
     const backendUrl = 'http://your-backend-url.com/api/search';
 
     axios.post(backendUrl, filters)
@@ -71,6 +102,8 @@ const HomeFilter = () => {
       propertyType: [],
       amenities: []
     });
+    setPriceError('');
+    setIsModalOpen(false);
   };
 
   return (
@@ -157,6 +190,13 @@ const HomeFilter = () => {
       />
       <button className="filter-button filter-button-search" onClick={handleSubmit}>SEARCH</button>
       <button className="filter-button filter-button-clear" onClick={handleClearFilters}>Clear Filters</button>
+
+      <Modal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} contentLabel="Price Error" className="price-error-modal">
+        <div className="modal-content">
+          <p>{priceError}</p>
+          <button onClick={() => setIsModalOpen(false)}>Close</button>
+        </div>
+      </Modal>
     </div>
   );
 };
