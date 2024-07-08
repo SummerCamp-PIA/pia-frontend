@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // React Router kullanıyoruz, eğer kullanıyorsanız
-import '../styles/style.css'; 
+import '../styles/NavBar.css'; 
+import profilePic from '../assets/images/yeni_logo.png';
 
 const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="logo">
-        <img src="/path/to/logo.png" alt="Logo" />
+        <img src={profilePic} alt="Logo" />
       </div>
       <ul className="nav-links">
         <li>

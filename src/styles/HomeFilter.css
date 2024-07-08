@@ -36,7 +36,7 @@
 }
 
 .filter-button-search {
-  background-color: #4caf50;
+  background-color: #0CC0DF;
   color: white;
 }
 
@@ -46,7 +46,7 @@
 }
 
 .filter-button-search:hover {
-  background-color: #45a049;
+  background-color: #0CC0DF;
 }
 
 .filter-button-clear:hover {
@@ -82,7 +82,7 @@
 .modal-content button {
   margin-top: 10px;
   padding: 10px 20px;
-  background-color: #4CAF50;
+  background-color: #0CC0DF;
   color: white;
   border: none;
   border-radius: 5px;
@@ -90,5 +90,5 @@
 }
 
 .modal-content button:hover {
-  background-color: #45a049;
+  background-color: #0CC0DF;
 }
