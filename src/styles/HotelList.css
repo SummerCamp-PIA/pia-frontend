@@ -1,0 +1,67 @@
+.hotel-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.hotel-card {
+    display: flex;
+    border: 2px solid black;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.hotel-image {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.hotel-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.hotel-info {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hotel-info h2 {
+    margin: 0;
+}
+
+.hotel-info p {
+    margin: 5px 0;
+}
+
+.hotel-rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hotel-reservation {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.hotel-reservation p {
+    margin: 5px 0;
+}
+
+.hotel-reservation button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.hotel-reservation button:hover {
+    background-color: #45a049;
+}
