@@ -67,8 +67,8 @@ const HomeFilter = () => {
       adults: '',
       minPrice: '',
       maxPrice: '',
-      accommodationType: '',
-      propertyType: '',
+      accommodationType: [],
+      propertyType: [],
       amenities: []
     });
   };
@@ -133,15 +133,17 @@ const HomeFilter = () => {
       />
       <Select
         name="accommodationType"
-        className="filter-select"
+        className="filter-multi-select"
         options={accommodationOptions}
+        isMulti
         onChange={handleSelectChange}
         placeholder="Accommodation Type"
       />
       <Select
         name="propertyType"
-        className="filter-select"
+        className="filter-multi-select"
         options={propertyOptions}
+        isMulti
         onChange={handleSelectChange}
         placeholder="Property Type"
       />
