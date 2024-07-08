@@ -6,6 +6,8 @@ import Register from '../pages/Register'
 import Home from '../pages/Home'
 import Hotels from '../pages/Hotels'
 import HotelDetailPage from '../pages/HotelDetailPage'
+import UserPage from '../pages/UserPage'
+
 
 const AppRouter = () => {
   return (
@@ -17,6 +19,7 @@ const AppRouter = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/hotels" element={<Hotels />} />
         <Route path="/hotel-detail" element={<HotelDetailPage />} />
+        <Route path="/user-page" element={<UserPage />} />
       </Routes>
     </Router>
   );

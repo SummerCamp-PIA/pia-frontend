@@ -1,0 +1,190 @@
+.hotel-booking {
+    font-family: Arial, sans-serif;
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  header {
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+  
+  header h1 {
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  header img {
+    max-width: 100%;
+    height: auto;
+    margin: 10px 0;
+  }
+  
+  header p {
+    margin: 5px 0;
+  }
+  
+  .comments {
+    margin-top: 10px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+  }
+  
+  .guest-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .guest {
+    flex: 1;
+    padding: 0 10px;
+  }
+  
+  .guest label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .guest input {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .room-choice, .accommodation-choice {
+    margin-bottom: 20px;
+  }
+  
+  .rooms {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .room {
+    text-align: center;
+    flex: 1;
+    margin: 0 5px;
+  }
+  
+  .room img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .room button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .room button:hover {
+    background-color: #0056b3;
+  }
+  
+  .accommodation-types {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .accommodation-types div {
+    margin: 5px 0;
+  }
+  
+  footer {
+    text-align: center;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+  }
+  
+  footer p {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  footer button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  footer button:hover {
+    background-color: #218838;
+  }
+  
+  .payment-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+  }
+  
+  .payment-modal h2 {
+    margin-top: 0;
+  }
+  
+  .payment-modal p {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .payment-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: calc(100% - 22px); /* Adjusting for padding */
+  }
+  
+  .payment-form input::placeholder {
+    color: #999;
+  }
+  
+  .payment-modal button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .payment-modal button:hover {
+    background-color: #0056b3;
+  }
