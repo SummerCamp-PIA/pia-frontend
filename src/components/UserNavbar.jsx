@@ -3,7 +3,7 @@ import '../styles/UserNavbar.css';
 
 const UserNavBar = () => {
   return (
-    <nav className="navbar">
+    <nav className="navbar-user">
       <div className="navbar-logo">
         <button>Logo</button>
       </div>
