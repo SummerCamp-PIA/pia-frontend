@@ -210,7 +210,8 @@ const HomeFilter = () => {
         className="filter-multi-select"
         options={accommodationOptions}
         isMulti
-        onChange={handleSelectChange}
+        value={filters.accommodationType ? accommodationOptions.filter(option => filters.accommodationType.includes(option.value)) : []}
+        onChange={(selectedOptions) => setFilters({ ...filters, accommodationType: selectedOptions ? selectedOptions.map(option => option.value) : [] })}
         placeholder="Accommodation Type"
       />
       <Select
@@ -218,7 +219,8 @@ const HomeFilter = () => {
         className="filter-multi-select"
         options={propertyOptions}
         isMulti
-        onChange={handleSelectChange}
+        value={filters.propertyType ? propertyOptions.filter(option => filters.propertyType.includes(option.value)) : []}
+        onChange={(selectedOptions) => setFilters({ ...filters, propertyType: selectedOptions ? selectedOptions.map(option => option.value) : [] })}
         placeholder="Property Type"
       />
       <Select
@@ -226,6 +228,7 @@ const HomeFilter = () => {
         className="filter-multi-select"
         options={amenitiesOptions}
         isMulti
+        value={filters.amenities ? amenitiesOptions.filter(option => filters.amenities.includes(option.value)) : []}
         onChange={handleMultiSelectChange}
         placeholder="Amenities"
       />
