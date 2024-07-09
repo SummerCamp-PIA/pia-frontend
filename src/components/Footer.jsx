@@ -1,19 +1,22 @@
 import React, { useState } from "react";
 import "../styles/style.css";
 import { SocialIcon } from "react-social-icons";
+import { useLocation } from "react-router-dom"; // react-router kullanarak konum bilgisi almak için
 
 const Footer = () => {
   const [showKVKK, setShowKVKK] = useState(false);
+  const location = useLocation(); // konum bilgisini almak
 
   const toggleKVKKPopup = () => {
     setShowKVKK(!showKVKK);
   };
 
+  // Home sayfasında olup olmadığını kontrol et
+  const isHomePage = location.pathname === '/home';
+
   return (
-    <footer className="footer">
+    <footer className={`footer ${isHomePage ? 'footer-home' : 'footer-other'}`}>
       <div className="footer-left">
-        <img src="/path/to/footer-logo.png" alt="Footer Logo" />
-        <p>Address, City, Country</p>
       </div>
       <div className="footer-right">
         <div className="social-links">

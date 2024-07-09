@@ -3,11 +3,10 @@ import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
 import { Form } from "formik"
 import { object, string } from "yup"
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 export const registerSchema = object({
-  username: string()
-    .max(20, "Username must be less than 20 characters.")
-    .required("Username is required"),
   firstName: string()
     .max(20, "First name must be less than 20 characters.")
     .required("First name is required"),
@@ -17,6 +16,9 @@ export const registerSchema = object({
   email: string()
     .email("Please enter a valid email.")
     .required("Email is required"),
+  phone: string()
+    .required("Phone number is required")
+    .matches(/^\+?[1-9]\d{1,14}$/, "Please enter a valid phone number"),
   password: string()
     .required("Password is required")
     .min(8, "Password must be at least 8 characters long")
@@ -33,22 +35,12 @@ const RegisterForm = ({
   errors,
   touched,
   handleBlur,
+  setFieldValue
 }) => {
   return (
     <Form>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        <TextField
-          label="User Name"
-          name="username"
-          id="userName"
-          type="text"
-          variant="outlined"
-          value={values.username}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={touched.username && Boolean(errors.username)}
-          helperText={errors.username}
-        />
+        
         <TextField
           label="First Name"
           name="firstName"
@@ -85,8 +77,31 @@ const RegisterForm = ({
           error={touched.email && Boolean(errors.email)}
           helperText={errors.email}
         />
+        <PhoneInput
+          country={'tr'}
+          value={values.phone}
+          onChange={phone => setFieldValue('phone', phone)}
+          inputStyle={{ 
+            width: '100%', 
+            height: '56px', 
+            fontSize: '16px', 
+            borderRadius: '5px',
+            border: '1px solid #ccc',
+            padding: '0 14px',
+            paddingLeft: '48px'
+          }}
+          containerStyle={{ width: '100%', marginTop: '16px', marginBottom: '16px' }}
+          inputProps={{
+            name: 'phone',
+            required: true,
+            autoFocus: false
+          }}
+        />
+        {touched.phone && errors.phone && (
+          <div style={{ color: 'red', marginTop: '5px' }}>{errors.phone}</div>
+        )}
         <TextField
-          label="password"
+          label="Password"
           name="password"
           id="password"
           type="password"

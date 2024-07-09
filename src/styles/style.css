@@ -50,9 +50,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
 }
 
 .footer-left {
@@ -84,14 +81,6 @@ body {
   margin-right: 20px;
 }
 
-.about-us  {
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-  padding: 10px 15px;
-  border-radius: 5px;
-  transition: background-color 0.3s, transform 0.3s;
-}
 .kvkk-popup {
   position: fixed;
   top: 50%;
@@ -119,35 +108,44 @@ body {
   transition: background-color 0.3s, transform 0.3s;
   cursor: pointer;
 }
+
 .kvkk-link:hover {
   background-color: white;
   color: #0CC0DF;
   transform: scale(1.05);
 }
 
-/* Linklerin active efekti */
 .kvkk-link:active {
   background-color: #0A9CC0;
   color: white;
   transform: scale(1);
 }
 
+/* Home sayfası için özel stil */
+.footer-home {
+  bottom: 0;
+  width: 100%;
+  margin-top: auto; /* Flexbox ile sayfanın altında kalmasını sağla */
+
+}
+
+/* Diğer sayfalar için özel stil */
+.footer-other {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
 
 /* Responsive Tasarım */
 @media (max-width: 768px) {
-  .navbar {
+  .footer {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .nav-links {
+  .social-links {
     margin-top: 10px;
   }
-
-  .nav-links li {
-    margin-right: 0;
-    margin-bottom: 5px;
-  }
-
-  
 }

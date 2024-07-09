@@ -1,57 +1,63 @@
-/* FilterComponent.css */
+/* HomeFilter.css */
 
 .filter-container {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 10px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
+  max-width: 1200px; /* Maksimum genişlik */
+  margin: 40px auto; /* Ortalamak için ve üstten boşluk eklemek için 40px margin */
+}
+
+.filter-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .filter-input, .filter-select, .filter-multi-select {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 16px;
-  width: 200px;
+  font-size: 14px;
+  flex: 1;
 }
 
 .filter-select, .filter-multi-select {
   width: 220px;
 }
 
-.filter-occupancy {
+.filter-buttons {
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   gap: 10px;
+  margin-top: 10px;
 }
 
 .filter-button {
-  padding: 10px 20px;
+  padding: 5px 10px; /* Butonları küçültmek için padding'i azaltın */
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 12px; /* Font boyutunu küçültün */
+  width: 400px; /* Butonların genişliğini azaltın */
 }
 
 .filter-button-search {
-  background-color: #0CC0DF;
+  background-color: #28a745; /* Search buttonu için yeşil */
   color: white;
 }
-
 .filter-button-clear {
-  background-color: #f0ad4e;
+  background-color: #f0ad4e; /* Clear Filters buttonu için sarı */
   color: white;
 }
 
-.filter-button-search:hover {
-  background-color: #0CC0DF;
-}
 
-.filter-button-clear:hover {
-  background-color: #ec971f;
-}
+
 
 .modal-overlay {
   position: fixed;
@@ -72,7 +78,7 @@
   width: 300px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
-  margin: auto; /* Bu satır modalı ortalamak için eklendi */
+  margin: auto;
 }
 
 .modal-content h2 {
@@ -81,12 +87,14 @@
 
 .modal-content button {
   margin-top: 10px;
-  padding: 10px 20px;
+  padding: 5px 10px; /* Butonları küçültmek için padding'i azaltın */
   background-color: #0CC0DF;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 12px; /* Font boyutunu küçültün */
+  width: 100px; /* Butonların genişliğini azaltın */
 }
 
 .modal-content button:hover {

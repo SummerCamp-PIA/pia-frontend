@@ -1,71 +1,49 @@
 import React from 'react';
+import '../styles/FeatureBox.css';
+import phone from '../assets/images/phone.jpg';
+import security from '../assets/images/security.png';
+import price from '../assets/images/price.avif';
+import hotel from '../assets/images/hotel.avif';
+
 
 const FeatureBox = () => {
   return (
-    <div style={styles.container}>
-      <div style={styles.feature}>
-        <div style={styles.icon}>
-          <img src="phone-icon.png" alt="Phone Icon" style={styles.iconImage} />
+    <div className="feature-container">
+      <div className="feature-box">
+        <div className="icon">
+          <img src={phone} alt="Phone Icon"style={{ width: '80px', height: '80px'}} />
         </div>
-        <div style={styles.text}>
-          Trusted customer service you can rely on, 24/7
-        </div>
-      </div>
-      <div style={styles.feature}>
-        <div style={styles.icon}>
-          <img src="payment-icon.png" alt="Payment Icon" style={styles.iconImage} />
-        </div>
-        <div style={styles.text}>
-          Reliable Payment Systems
+        <div className="text">
+          <h3>Trusted customer service you can rely on, 24/7</h3>
+     
         </div>
       </div>
-      <div style={styles.feature}>
-        <div style={styles.icon}>
-          <img src="discount-icon.png" alt="Discount Icon" style={styles.iconImage} />
+      <div className="feature-box">
+        <div className="icon" style={{ marginTop: '-10px' }}>
+          <img src={security} alt="Payment Icon" style={{ width: '150px', height: '100px'}} />
         </div>
-        <div style={styles.text}>
-          Discount Opportunities
+        <div className="text">
+          <h3>Reliable Payment Systems</h3>
         </div>
       </div>
-      <div style={styles.feature}>
-        <div style={styles.icon}>
-          <img src="hotel-icon.png" alt="Hotel Icon" style={styles.iconImage} />
+      <div className="feature-box">
+        <div className="icon">
+          <img src={price} alt="Discount Icon" style={{ width: '100px', height: '100px'}} />
         </div>
-        <div style={styles.text}>
-          More than 5000 hotels worldwide
+        <div className="text">
+          <h3>The most reasonable price</h3>
+        </div>
+      </div>
+      <div className="feature-box">
+        <div className="icon">
+        <img src={hotel} alt="Discount Icon" style={{ width: '100px', height: '100px'}} />
+        </div>
+        <div className="text">
+          <h3>More than 5000 hotels worldwide</h3>
         </div>
       </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: '20px',
-    border: '2px solid #000',
-    borderRadius: '10px',
-    marginTop: '3rem',
-  },
-  feature: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: '24%',
-  },
-  icon: {
-    marginBottom: '10px',
-  },
-  iconImage: {
-    width: '50px',
-    height: '50px',
-  },
-  text: {
-    textAlign: 'center',
-    fontSize: '16px',
-    fontWeight: 'bold',
-  },
 };
 
 export default FeatureBox;

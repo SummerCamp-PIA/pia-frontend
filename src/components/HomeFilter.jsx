@@ -149,29 +149,29 @@ const HomeFilter = () => {
 
   return (
     <div className="filter-container">
-      <input
-        type="text"
-        name="destination"
-        className="filter-input"
-        placeholder="Destination"
-        value={filters.destination}
-        onChange={handleChange}
-      />
-      <input
-        type="date"
-        name="checkIn"
-        className="filter-input"
-        value={filters.checkIn}
-        onChange={handleChange}
-      />
-      <input
-        type="date"
-        name="checkOut"
-        className="filter-input"
-        value={filters.checkOut}
-        onChange={handleChange}
-      />
-      <div className="filter-occupancy">
+      <div className="filter-row">
+        <input
+          type="text"
+          name="destination"
+          className="filter-input"
+          placeholder="Destination"
+          value={filters.destination}
+          onChange={handleChange}
+        />
+        <input
+          type="date"
+          name="checkIn"
+          className="filter-input"
+          value={filters.checkIn}
+          onChange={handleChange}
+        />
+        <input
+          type="date"
+          name="checkOut"
+          className="filter-input"
+          value={filters.checkOut}
+          onChange={handleChange}
+        />
         <input
           type="number"
           name="rooms"
@@ -189,51 +189,56 @@ const HomeFilter = () => {
           onChange={handleChange}
         />
       </div>
-      <input
-        type="number"
-        name="minPrice"
-        className="filter-input"
-        placeholder="Min. Price"
-        value={filters.minPrice}
-        onChange={handleChange}
-      />
-      <input
-        type="number"
-        name="maxPrice"
-        className="filter-input"
-        placeholder="Max. Price"
-        value={filters.maxPrice}
-        onChange={handleChange}
-      />
-      <Select
-        name="accommodationType"
-        className="filter-multi-select"
-        options={accommodationOptions}
-        isMulti
-        value={filters.accommodationType ? accommodationOptions.filter(option => filters.accommodationType.includes(option.value)) : []}
-        onChange={(selectedOptions) => setFilters({ ...filters, accommodationType: selectedOptions ? selectedOptions.map(option => option.value) : [] })}
-        placeholder="Accommodation Type"
-      />
-      <Select
-        name="propertyType"
-        className="filter-multi-select"
-        options={propertyOptions}
-        isMulti
-        value={filters.propertyType ? propertyOptions.filter(option => filters.propertyType.includes(option.value)) : []}
-        onChange={(selectedOptions) => setFilters({ ...filters, propertyType: selectedOptions ? selectedOptions.map(option => option.value) : [] })}
-        placeholder="Property Type"
-      />
-      <Select
-        name="amenities"
-        className="filter-multi-select"
-        options={amenitiesOptions}
-        isMulti
-        value={filters.amenities ? amenitiesOptions.filter(option => filters.amenities.includes(option.value)) : []}
-        onChange={handleMultiSelectChange}
-        placeholder="Amenities"
-      />
-      <button className="filter-button filter-button-search" onClick={handleSubmit}>SEARCH</button>
-      <button className="filter-button filter-button-clear" onClick={handleClearFilters}>Clear Filters</button>
+      <div className="filter-row">
+        <input
+          type="number"
+          name="minPrice"
+          className="filter-input"
+          placeholder="Min. Price"
+          value={filters.minPrice}
+          onChange={handleChange}
+        />
+        <input
+          type="number"
+          name="maxPrice"
+          className="filter-input"
+          placeholder="Max. Price"
+          value={filters.maxPrice}
+          onChange={handleChange}
+        />
+        <Select
+          name="accommodationType"
+          className="filter-multi-select"
+          options={accommodationOptions}
+          isMulti
+          value={filters.accommodationType ? accommodationOptions.filter(option => filters.accommodationType.includes(option.value)) : []}
+          onChange={(selectedOptions) => setFilters({ ...filters, accommodationType: selectedOptions ? selectedOptions.map(option => option.value) : [] })}
+          placeholder="Accommodation Type"
+        />
+        <Select
+          name="propertyType"
+          className="filter-multi-select"
+          options={propertyOptions}
+          isMulti
+          value={filters.propertyType ? propertyOptions.filter(option => filters.propertyType.includes(option.value)) : []}
+          onChange={(selectedOptions) => setFilters({ ...filters, propertyType: selectedOptions ? selectedOptions.map(option => option.value) : [] })}
+          placeholder="Property Type"
+        />
+        <Select
+          name="amenities"
+          className="filter-multi-select"
+          options={amenitiesOptions}
+          isMulti
+          value={filters.amenities ? amenitiesOptions.filter(option => filters.amenities.includes(option.value)) : []}
+          onChange={handleMultiSelectChange}
+          placeholder="Amenities"
+        />
+      </div>
+      <div className="filter-buttons">
+        <button className="filter-button filter-button-clear" onClick={handleClearFilters}>Clear Filters</button>
+        <button className="filter-button filter-button-search" onClick={handleSubmit}>SEARCH</button>
+
+      </div>
 
       <Modal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} contentLabel="Error" className="price-error-modal">
         <div className="modal-content">

@@ -74,10 +74,10 @@ const Register = () => {
 
           <Formik
             initialValues={{
-              username: "",
               firstName: "",
               lastName: "",
               email: "",
+              phone: "",
               password: "",
             }}
             validationSchema={registerSchema}
@@ -104,7 +104,7 @@ const Register = () => {
         <Grid item xs={0} sm={7} md={6}>
           <Container>
           <img src={profilePic} alt="Profile"
-           style={{  marginLeft: '-150px'}} 
+           style={{  marginLeft: '-150px', marginTop: '90px'}} 
           />
           </Container>
         </Grid>

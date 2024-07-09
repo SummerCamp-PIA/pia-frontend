@@ -1,29 +1,29 @@
 import React from 'react';
+import { List, ListItem, ListItemText, Divider } from '@mui/material';
 
 const MyReservations = ({ reservations }) => {
   return (
-    <div className="reservations">
-      <h2>My Reservations</h2>
+    <List>
       {reservations.map((reservation, index) => (
-        <div className="reservation" key={index}>
-          <p>Check-in/Check-out Dates: {reservation.dates}</p>
-          <div className="details">
-            <img src={reservation.image} alt="Hotel" />
-            <div>
-              <p>Hotel Name: {reservation.hotelName}</p>
-              <p>Location: {reservation.location}</p>
-              <p>Rating: {reservation.rating}</p>
-              <p>Reservation Date: {reservation.reservationDate}</p>
-            </div>
-            <div className="rating">
-              <p>Rate</p>
-              <input type="text" placeholder="Comment..." />
-              <button>Send</button>
-            </div>
-          </div>
-        </div>
+        <React.Fragment key={index}>
+          <ListItem alignItems="flex-start">
+            <ListItemText
+              primary={reservation.name}
+              secondary={
+                <>
+                  <span>{reservation.location}</span>
+                  <br />
+                  <span>{reservation.nights} nights</span>
+                  <br />
+                  <span>${reservation.price}</span>
+                </>
+              }
+            />
+          </ListItem>
+          {index < reservations.length - 1 && <Divider />}
+        </React.Fragment>
       ))}
-    </div>
+    </List>
   );
 };
 

@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Container, Box, Typography, TextField, Button, Grid, Paper, Slide } from '@mui/material';
 import MyReservations from '../components/MyReservations';
 import ChangePassword from '../components/ChangePassword';
 import UserNavbar from '../components/UserNavbar';
 import Footer from '../components/Footer';
 import '../styles/UserPage.css';
-
-//TODO: Backend tarafında, /api/userInfo, /api/userReservations ve /api/changePassword endpointler
-
 
 const UserPage = () => {
   const [view, setView] = useState('reservations'); // 'reservations' or 'changePassword'
@@ -35,37 +33,77 @@ const UserPage = () => {
   };
 
   return (
-    <div className="user-page">
-      <UserNavbar /> 
-      <header>
-        <div className="info">
-          <div>
-            <label>Name</label>
-            <input type="text" value={userInfo.name} readOnly />
-          </div>
-          <div>
-            <label>Email</label>
-            <input type="text" value={userInfo.email} readOnly />
-          </div>
-          <div>
-            <label>Surname</label>
-            <input type="text" value={userInfo.surname} readOnly />
-          </div>
-          <div>
-            <label>Phone Number</label>
-            <input type="text" value={userInfo.phone} readOnly />
-          </div>
-        </div>
-        <button onClick={handleChangePasswordClick}>Change Password</button>
-      </header>
-      <div className={`content ${view === 'changePassword' ? 'slide-out' : ''}`}>
-        <MyReservations reservations={reservations} />
-      </div>
-      <div className={`content ${view === 'changePassword' ? 'slide-in' : 'hidden'}`}>
-        <ChangePassword onBack={handleBackToReservations} />
-      </div>
-      <Footer /> 
-    </div>
+    <Container>
+      <UserNavbar />
+      <Box sx={{ mt: 4 }}>
+        <Paper elevation={3} sx={{ p: 2 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <TextField
+                label="Name"
+                value={userInfo.name}
+                fullWidth
+                InputProps={{
+                  readOnly: true,
+                }}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                label="Surname"
+                value={userInfo.surname}
+                fullWidth
+                InputProps={{
+                  readOnly: true,
+                }}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                label="Email"
+                value={userInfo.email}
+                fullWidth
+                InputProps={{
+                  readOnly: true,
+                }}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                label="Phone Number"
+                value={userInfo.phone}
+                fullWidth
+                InputProps={{
+                  readOnly: true,
+                }}
+                variant="outlined"
+              />
+            </Grid>
+          </Grid>
+          <Box sx={{ mt: 2, textAlign: 'right' }}>
+            <Button variant="contained" onClick={handleChangePasswordClick}>
+              Change Password
+            </Button>
+          </Box>
+        </Paper>
+        <Box sx={{ mt: 4 }}>
+          <Slide direction="left" in={view === 'reservations'} mountOnEnter unmountOnExit>
+            <Paper elevation={3} sx={{ p: 2 }}>
+              <MyReservations reservations={reservations} />
+            </Paper>
+          </Slide>
+          <Slide direction="right" in={view === 'changePassword'} mountOnEnter unmountOnExit>
+            <Paper elevation={3} sx={{ p: 2 }}>
+              <ChangePassword onBack={handleBackToReservations} />
+            </Paper>
+          </Slide>
+        </Box>
+      </Box>
+      <Footer />
+    </Container>
   );
 };
 
