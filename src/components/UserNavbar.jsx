@@ -10,7 +10,7 @@ const UserNavBar = () => {
     // JWT token'ı iptal et (localStorage veya sessionStorage'dan kaldır)
     localStorage.removeItem('token');
     // Kullanıcıyı home sayfasına yönlendir
-    window.location.reload();
+    navigate('/');
   };
 
   const handleUserPage = () => {
