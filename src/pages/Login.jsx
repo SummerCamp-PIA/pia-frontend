@@ -6,6 +6,9 @@ import LoginForm, { loginSchema } from '../components/LoginForm';
 import '../styles/login.css'; 
 import profilePic from '../assets/images/logo.png';
 import { useAuth } from '../service/AuthContext';
+import Avatar from "@mui/material/Avatar";
+import LockIcon from "@mui/icons-material/Lock";
+import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
@@ -38,7 +41,26 @@ function Login() {
           className="login-image"
         />
       </div>
+      
       <div className="login-container">
+        <Avatar
+          sx={{
+            backgroundColor: "#0CC0DF",
+            m: "auto",
+            width: 40,
+            height: 40,
+          }}
+        >
+          <LockIcon size="30" />
+        </Avatar>
+        <Typography
+          variant="h4"
+          align="center"
+          mb={2}
+          sx={{ color: '#0CC0DF' }}
+        >
+          Login
+        </Typography>
         <Formik
           initialValues={{ username: '', password: '' }}
           validationSchema={loginSchema}
