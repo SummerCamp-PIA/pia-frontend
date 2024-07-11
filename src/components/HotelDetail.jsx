@@ -29,7 +29,7 @@ const HotelDetail = () => {
 
   useEffect(() => {
     isAdmin()
-    axios.get(`/hotel/${id}`)
+    axios.get(`${process.env.REACT_APP_BASE_URL}/hotel/${id}`)
       .then(response => setHotelData(response.data))
       .catch(error => console.error('Error fetching hotel data:', error));
   }, []);

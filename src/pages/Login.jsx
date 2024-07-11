@@ -5,7 +5,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import LoginForm, { loginSchema } from '../components/LoginForm';
 import '../styles/login.css'; 
 import profilePic from '../assets/images/logo.png';
-
+import { useAuth } from '../service/AuthContext';
 // const Login = () => {
 //   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
 //     try {
@@ -21,20 +21,26 @@ import profilePic from '../assets/images/logo.png';
 
 function Login() {
   const navigate = useNavigate();
+  const { user, isAdmin } = useAuth();
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
       const response = await axios.post('http://localhost:8080/login', values);
-      const role = response.data.role;
+      const jwt = response.data.jwt;
+      if (jwt){
+        localStorage.setItem('token',jwt);
+        //navigate('/home');
+        window.location.replace("/home")
+      }
 
       // Kullanıcı rolüne göre yönlendirme
-      if (role === 'admin') {
-        navigate('/admin-home');
-      } else if (role === 'user') {
-        navigate('/home');
-      } else {
-        console.error('Bilinmeyen rol:', role);
-      }
+      // if (role === 'admin') {
+      //   navigate('/admin-home');
+      // } else if (role === 'user') {
+      //   navigate('/home');
+      // } else {
+      //   console.error('Bilinmeyen rol:', role);
+      // }
     } catch (err) {
       setErrors({ submit: 'Login failed. Please check your username and password.' });
     } finally {
