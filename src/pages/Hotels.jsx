@@ -8,7 +8,6 @@ function Hotels() {
     return (
         <div>
             <NavBar />
-            <HomeFilter />
             <HotelList />
             <Footer />
         </div>

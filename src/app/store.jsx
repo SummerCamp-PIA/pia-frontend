@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit"
 import authReducer from "../features/authSlice"
+import filterReducer from '../features/filterSlice';
 import {
   persistStore,
   persistReducer,
@@ -23,7 +24,7 @@ const persistedReducer = persistReducer(persistConfig, authReducer)
 const store = configureStore({
   reducer: {
     auth: persistedReducer,
-    stock: stockReducer,
+    filters: filterReducer,
   },
   devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) =>

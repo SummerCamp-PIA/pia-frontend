@@ -1,16 +1,40 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import LoginForm, { loginSchema } from '../components/LoginForm';
 import '../styles/login.css'; 
 import profilePic from '../assets/images/logo.png';
 
-const Login = () => {
+// const Login = () => {
+//   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+//     try {
+//       const response = await axios.post('http://localhost:8080/login', values);
+//       // Login başarılı olduğunda yapılacak işlemler
+//       console.log(response.data);
+//     } catch (err) {
+//       setErrors({ submit: 'Login failed. Please check your username and password.' });
+//     } finally {
+//       setSubmitting(false);
+//     }
+//   };
+
+function Login() {
+  const navigate = useNavigate();
+
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const response = await axios.post('/api/login', values);
-      // Login başarılı olduğunda yapılacak işlemler
-      console.log(response.data);
+      const response = await axios.post('http://localhost:8080/login', values);
+      const role = response.data.role;
+
+      // Kullanıcı rolüne göre yönlendirme
+      if (role === 'admin') {
+        navigate('/admin-home');
+      } else if (role === 'user') {
+        navigate('/home');
+      } else {
+        console.error('Bilinmeyen rol:', role);
+      }
     } catch (err) {
       setErrors({ submit: 'Login failed. Please check your username and password.' });
     } finally {

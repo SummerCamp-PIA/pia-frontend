@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 import '../styles/HotelDetail.css';
+import { useParams } from 'react-router-dom';
+import { useAuth } from '../service/AuthContext';
+
 
 
 Modal.setAppElement('#root');
 
 const HotelDetail = () => {
+  const { user, isAdmin } = useAuth();
   const [hotelData, setHotelData] = useState({});
   const [guest1, setGuest1] = useState({ name: '', surname: '', dob: '', id: '' });
   const [guest2, setGuest2] = useState({ name: '', surname: '', dob: '', id: '' });
@@ -21,8 +25,11 @@ const HotelDetail = () => {
     cvc: ''
   });
 
+  let {id} = useParams()
+
   useEffect(() => {
-    axios.get('/api/hotelData')
+    isAdmin()
+    axios.get(`/hotel/${id}`)
       .then(response => setHotelData(response.data))
       .catch(error => console.error('Error fetching hotel data:', error));
   }, []);
@@ -42,7 +49,7 @@ const HotelDetail = () => {
   };
 
   const submitPayment = () => {
-    axios.post('/api/processPayment', {
+    axios.post('/processPayment', {
       amount: totalAmount,
       paymentDetails
     })

@@ -25,7 +25,7 @@ const useAuthCalls = () => {
       //   `${process.env.REACT_APP_BASE_URL}/auth/login/`,
       //   userInfo
       // )
-      const { data } = await axiosPublic.post("/auth/login/", userInfo)
+      const { data } = await axiosPublic.post("http://localhost:8080/auth/login/", userInfo)
       dispatch(loginSuccess(data))
       toastSuccessNotify("Login işlemi basarili.")
       navigate("/hotels")
@@ -43,7 +43,7 @@ const useAuthCalls = () => {
       //   `${process.env.REACT_APP_BASE_URL}/users/`,
       //   userInfo
       // )
-      const { data } = await axiosPublic.post("/users/", userInfo)
+      const { data } = await axiosPublic.post("http://localhost:8080/users/", userInfo)
       dispatch(registerSuccess(data))
       navigate("/hotels")
     } catch (error) {
@@ -57,7 +57,7 @@ const useAuthCalls = () => {
       // await axios.get(`${process.env.REACT_APP_BASE_URL}/auth/logout`, {
       //   headers: { Authorization: `Token ${token}` },
       // })
-      await axiosWithToken("/auth/logout/")
+      await axiosWithToken("http://localhost:8080/auth/logout/")
       toastSuccessNotify("Çıkış işlemi başarili.")
       dispatch(logoutSuccess())
       // navigate("/")

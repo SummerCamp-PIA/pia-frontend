@@ -45,7 +45,7 @@ const Admin = () => {
     };
     console.log('Hotel Data:', hotelData);
 
-    fetch('https://api.example.com/hotels', {  // Burada backend URL'inizi kullanın
+    fetch('http://localhost:8080/hotels', {  // Burada backend URL'inizi kullanın
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
