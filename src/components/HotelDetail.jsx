@@ -1,70 +1,134 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Modal from 'react-modal';
-import '../styles/HotelDetail.css';
-import { useParams } from 'react-router-dom';
-import { useAuth } from '../service/AuthContext';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Modal from "react-modal";
+import "../styles/HotelDetail.css";
+import { useParams } from "react-router-dom";
+import { useAuth } from "../service/AuthContext";
+import Select from "react-select";
+import { FaStar } from "react-icons/fa";
 
-
-
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 const HotelDetail = () => {
   const { user, isAdmin } = useAuth();
   const [hotelData, setHotelData] = useState({});
-  const [guest1, setGuest1] = useState({ name: '', surname: '', dob: '', id: '' });
-  const [guest2, setGuest2] = useState({ name: '', surname: '', dob: '', id: '' });
-  const [selectedRoom, setSelectedRoom] = useState('');
-  const [accommodationType, setAccommodationType] = useState('');
+  const [guests, setGuests] = useState([
+    { name: "", surname: "", dob: "", id: "" },
+  ]);
+  const [selectedRoom, setSelectedRoom] = useState("");
+  const [selectedRoomDetails, setSelectedRoomDetails] = useState(null);
+  const [accommodationOptions, setAccommodationOptions] = useState([]);
+  const [selectedAccommodationTypes, setSelectedAccommodationTypes] = useState(
+    []
+  );
+  const [roomOptions, setRoomOptions] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [rating, setRating] = useState(0);
   const [paymentDetails, setPaymentDetails] = useState({
-    cardOwner: '',
-    cardNumber: '',
-    expiryDate: '',
-    cvc: ''
+    cardOwner: "",
+    cardNumber: "",
+    expiryDate: "",
+    cvc: "",
   });
 
-  let {id} = useParams()
+  let { id } = useParams();
 
   useEffect(() => {
-    isAdmin()
-    axios.get(`${process.env.REACT_APP_BASE_URL}/hotel/${id}`)
-      .then(response => setHotelData(response.data))
-      .catch(error => console.error('Error fetching hotel data:', error));
-  }, []);
+    axios
+      .get(`${process.env.REACT_APP_BASE_URL}/hotel/${id}`)
+      .then((response) => {
+        setHotelData(response.data);
+        setAccommodationOptions(
+          response.data.accommodationTypes.map((type) => ({
+            value: type.name,
+            label: type.name,
+          }))
+        );
+        setRoomOptions(
+          response.data.rooms.map((room) => ({
+            value: room.type,
+            label: room.type,
+          }))
+        );
+        setRating(response.data.rating); // Otelin rating değerini set et
+      })
+      .catch((error) => console.error("Error fetching hotel data:", error));
+  }, [id]);
 
-  useEffect(() => {
-    let amount = 0;
-    if (selectedRoom && accommodationType) {
-      const room = hotelData.rooms?.find(room => room.type === selectedRoom);
-      const accommodation = hotelData.accommodationTypes?.find(type => type.name === accommodationType);
-      amount = (room?.price || 0) + (accommodation?.price || 0);
+  const handleRoomSelection = (selectedOption) => {
+    const room = hotelData.rooms.find(
+      (room) => room.type === selectedOption.value
+    );
+    setSelectedRoom(selectedOption.value);
+    setSelectedRoomDetails(room);
+    setGuests(
+      new Array(room.beds).fill({ name: "", surname: "", dob: "", id: "" })
+    );
+  };
+
+  const handleAccommodationSelection = (selectedOptions) => {
+    setSelectedAccommodationTypes(
+      selectedOptions.map((option) => option.value)
+    );
+  };
+
+  const handleConfirmation = () => {
+    if (selectedRoom && selectedAccommodationTypes.length > 0) {
+      axios
+        .post(`${process.env.REACT_APP_BASE_URL}/calculateTotal`, {
+          roomType: selectedRoom,
+          accommodationTypes: selectedAccommodationTypes,
+        })
+        .then((response) => {
+          setTotalAmount(response.data.totalAmount);
+          setIsConfirmed(true);
+        })
+        .catch((error) =>
+          console.error("Error calculating total amount:", error)
+        );
+    } else {
+      alert("Please select both a room and at least one accommodation type.");
     }
-    setTotalAmount(amount);
-  }, [selectedRoom, accommodationType, hotelData]);
+  };
 
   const handlePayment = () => {
-    setIsPaymentModalOpen(true);
+    if (isConfirmed) {
+      setIsPaymentModalOpen(true);
+    } else {
+      alert("Please confirm your selections first.");
+    }
   };
 
   const submitPayment = () => {
-    axios.post('/processPayment', {
-      amount: totalAmount,
-      paymentDetails
-    })
-    .then(response => {
-      if (response.data.success) {
-        alert('Payment successful');
-      } else {
-        alert('Payment failed: ' + response.data.message);
-      }
-      setIsPaymentModalOpen(false);
-    })
-    .catch(error => {
-      alert('Payment failed: ' + error.message);
-      setIsPaymentModalOpen(false);
-    });
+    axios
+      .post("/processPayment", {
+        amount: totalAmount,
+        paymentDetails,
+      })
+      .then((response) => {
+        if (response.data.success) {
+          alert("Payment successful");
+        } else {
+          alert("Payment failed: " + response.data.message);
+        }
+        setIsPaymentModalOpen(false);
+      })
+      .catch((error) => {
+        alert("Payment failed: " + error.message);
+        setIsPaymentModalOpen(false);
+      });
+  };
+
+  const renderStars = () => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <FaStar key={i} color={i <= rating ? "#ffc107" : "#e4e5e9"} size={20} />
+      );
+    }
+    return stars;
   };
 
   return (
@@ -74,7 +138,7 @@ const HotelDetail = () => {
         <img src={hotelData.image} alt="Hotel" />
         <p>{hotelData.location}</p>
         <p>{hotelData.description}</p>
-        <p>Rating: {hotelData.rating}</p>
+        <div className="rating">{renderStars()}</div>
         <div className="comments">
           {hotelData.comments?.map((comment, index) => (
             <p key={index}>{comment}</p>
@@ -83,60 +147,105 @@ const HotelDetail = () => {
       </header>
 
       <section className="guest-info">
-        <div className="guest">
-          <label>Guest 1</label>
-          <input placeholder="Name" value={guest1.name} onChange={(e) => setGuest1({ ...guest1, name: e.target.value })} />
-          <input placeholder="Surname" value={guest1.surname} onChange={(e) => setGuest1({ ...guest1, surname: e.target.value })} />
-          <input placeholder="Date of Birth" value={guest1.dob} onChange={(e) => setGuest1({ ...guest1, dob: e.target.value })} />
-          <input placeholder="ID Number" value={guest1.id} onChange={(e) => setGuest1({ ...guest1, id: e.target.value })} />
-        </div>
-        <div className="guest">
-          <label>Guest 2</label>
-          <input placeholder="Name" value={guest2.name} onChange={(e) => setGuest2({ ...guest2, name: e.target.value })} />
-          <input placeholder="Surname" value={guest2.surname} onChange={(e) => setGuest2({ ...guest2, surname: e.target.value })} />
-          <input placeholder="Date of Birth" value={guest2.dob} onChange={(e) => setGuest2({ ...guest2, dob: e.target.value })} />
-          <input placeholder="ID Number" value={guest2.id} onChange={(e) => setGuest2({ ...guest2, id: e.target.value })} />
-        </div>
-      </section>
-
-      <section className="room-choice">
-        <h2>Room Choice</h2>
-        <div className="rooms">
-          {hotelData.rooms?.map(room => (
-            <div className="room" key={room.type}>
-              <img src={room.image} alt={room.type} />
-              <button onClick={() => setSelectedRoom(room.type)}>
-                {room.type} - {room.price}$
-              </button>
-            </div>
-          ))}
-        </div>
+        {guests.map((guest, index) => (
+          <div className="guest" key={index}>
+            <label>Guest {index + 1}</label>
+            <input
+              placeholder="Name"
+              value={guest.name}
+              onChange={(e) => {
+                const newGuests = [...guests];
+                newGuests[index].name = e.target.value;
+                setGuests(newGuests);
+              }}
+            />
+            <input
+              placeholder="Surname"
+              value={guest.surname}
+              onChange={(e) => {
+                const newGuests = [...guests];
+                newGuests[index].surname = e.target.value;
+                setGuests(newGuests);
+              }}
+            />
+            <input
+              placeholder="Date of Birth"
+              value={guest.dob}
+              onChange={(e) => {
+                const newGuests = [...guests];
+                newGuests[index].dob = e.target.value;
+                setGuests(newGuests);
+              }}
+            />
+            <input
+              placeholder="ID Number"
+              value={guest.id}
+              onChange={(e) => {
+                const newGuests = [...guests];
+                newGuests[index].id = e.target.value;
+                setGuests(newGuests);
+              }}
+            />
+          </div>
+        ))}
       </section>
 
       <section className="accommodation-choice">
         <h2>Accommodation Choice</h2>
-        <div className="accommodation-types">
-          {hotelData.accommodationTypes?.map(type => (
-            <div key={type.name}>
-              <input 
-                type="radio" 
-                name="accommodationType" 
-                value={type.name} 
-                checked={accommodationType === type.name} 
-                onChange={() => setAccommodationType(type.name)} 
-              />
-              {type.name} - {type.price}$
+        <Select
+          name="accommodationType"
+          className="filter-multi-select"
+          options={accommodationOptions}
+          isMulti
+          value={selectedAccommodationTypes.map((type) =>
+            accommodationOptions.find((option) => option.value === type)
+          )}
+          onChange={handleAccommodationSelection}
+          placeholder="Accommodation Type"
+        />
+      </section>
+
+      <section className="room-choice">
+        <h2>Room Choice</h2>
+        <Select
+          name="roomType"
+          className="filter-single-select"
+          options={roomOptions}
+          value={roomOptions.find((option) => option.value === selectedRoom)}
+          onChange={handleRoomSelection}
+          placeholder="Room Type"
+        />
+        {selectedRoomDetails && (
+          <div className="room-details">
+            <img
+              src={selectedRoomDetails.image}
+              alt={selectedRoomDetails.type}
+            />
+            <div>Number of beds: {selectedRoomDetails.beds}</div>
+            <div>
+              Jacuzzi: {selectedRoomDetails.jacuzzi ? "Yes" : "No"} <br />
+              Balcony: {selectedRoomDetails.balcony ? "Yes" : "No"} <br />
+              Mini bar: {selectedRoomDetails.miniBar ? "Yes" : "No"} <br />
+              Air Conditioning:{" "}
+              {selectedRoomDetails.airConditioning ? "Yes" : "No"}
             </div>
-          ))}
-        </div>
+          </div>
+        )}
       </section>
 
       <footer>
         <p>Total Amount: {totalAmount}$</p>
-        <button onClick={handlePayment}>Go to Payment</button>
+        <button onClick={handleConfirmation}>Confirm Selection</button>
+        <button onClick={handlePayment} disabled={!isConfirmed}>
+          Go to Payment
+        </button>
       </footer>
 
-      <Modal isOpen={isPaymentModalOpen} onRequestClose={() => setIsPaymentModalOpen(false)} className="payment-modal">
+      <Modal
+        isOpen={isPaymentModalOpen}
+        onRequestClose={() => setIsPaymentModalOpen(false)}
+        className="payment-modal"
+      >
         <h2>Payment</h2>
         <p>Price: {totalAmount}$</p>
         <div className="payment-form">
@@ -144,25 +253,42 @@ const HotelDetail = () => {
             type="text"
             placeholder="Full Name of the card owner"
             value={paymentDetails.cardOwner}
-            onChange={(e) => setPaymentDetails({ ...paymentDetails, cardOwner: e.target.value })}
+            onChange={(e) =>
+              setPaymentDetails({
+                ...paymentDetails,
+                cardOwner: e.target.value,
+              })
+            }
           />
           <input
             type="text"
             placeholder="Card Number"
             value={paymentDetails.cardNumber}
-            onChange={(e) => setPaymentDetails({ ...paymentDetails, cardNumber: e.target.value })}
+            onChange={(e) =>
+              setPaymentDetails({
+                ...paymentDetails,
+                cardNumber: e.target.value,
+              })
+            }
           />
           <input
             type="text"
             placeholder="Expiration Date"
             value={paymentDetails.expiryDate}
-            onChange={(e) => setPaymentDetails({ ...paymentDetails, expiryDate: e.target.value })}
+            onChange={(e) =>
+              setPaymentDetails({
+                ...paymentDetails,
+                expiryDate: e.target.value,
+              })
+            }
           />
           <input
             type="text"
             placeholder="CVC/CVV"
             value={paymentDetails.cvc}
-            onChange={(e) => setPaymentDetails({ ...paymentDetails, cvc: e.target.value })}
+            onChange={(e) =>
+              setPaymentDetails({ ...paymentDetails, cvc: e.target.value })
+            }
           />
         </div>
         <button onClick={submitPayment}>Make Payment</button>
