@@ -6,18 +6,9 @@ import LoginForm, { loginSchema } from '../components/LoginForm';
 import '../styles/login.css'; 
 import profilePic from '../assets/images/logo.png';
 import { useAuth } from '../service/AuthContext';
-// const Login = () => {
-//   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
-//     try {
-//       const response = await axios.post('http://localhost:8080/login', values);
-//       // Login başarılı olduğunda yapılacak işlemler
-//       console.log(response.data);
-//     } catch (err) {
-//       setErrors({ submit: 'Login failed. Please check your username and password.' });
-//     } finally {
-//       setSubmitting(false);
-//     }
-//   };
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import { Link } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
@@ -28,19 +19,9 @@ function Login() {
       const response = await axios.post('http://localhost:8080/login', values);
       const jwt = response.data.jwt;
       if (jwt){
-        localStorage.setItem('token',jwt);
-        //navigate('/home');
+        localStorage.setItem('token', jwt);
         window.location.replace("/home")
       }
-
-      // Kullanıcı rolüne göre yönlendirme
-      // if (role === 'admin') {
-      //   navigate('/admin-home');
-      // } else if (role === 'user') {
-      //   navigate('/home');
-      // } else {
-      //   console.error('Bilinmeyen rol:', role);
-      // }
     } catch (err) {
       setErrors({ submit: 'Login failed. Please check your username and password.' });
     } finally {
@@ -50,6 +31,13 @@ function Login() {
 
   return (
     <div className="login-page">
+      <div className="image-container">
+        <img 
+          src={profilePic} 
+          alt="Profile" 
+          className="login-image"
+        />
+      </div>
       <div className="login-container">
         <Formik
           initialValues={{ username: '', password: '' }}
@@ -80,19 +68,19 @@ function Login() {
               </div>
               {errors.submit && <div className="error">{errors.submit}</div>}
               <button type="submit" disabled={isSubmitting}>Login</button>
+              <Box sx={{ textAlign: "center", mt: 2 }}>
+                <Link to="/register" style={{ 
+                  color: '#0CC0DF', 
+                  backgroundColor: '#ffcb96', 
+                  padding: '5px', 
+                  borderRadius: '5px' ,
+                  fontWeight: 'bold' 
+                }}
+                >Do you not have an account?</Link>
+              </Box>
             </Form>
           )}
         </Formik>
-      </div>
-      <div className="image-container">
-        <img 
-          src={profilePic} 
-          alt="Profile" 
-          style={{ 
-            marginLeft: '-10px', 
-            marginTop: '20px' 
-          }} 
-        />
       </div>
     </div>
   );
