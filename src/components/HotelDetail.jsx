@@ -17,11 +17,21 @@ const HotelDetail = () => {
   ]);
   const [selectedRoom, setSelectedRoom] = useState("");
   const [selectedRoomDetails, setSelectedRoomDetails] = useState(null);
-  const [accommodationOptions, setAccommodationOptions] = useState([]);
-  const [selectedAccommodationTypes, setSelectedAccommodationTypes] = useState(
-    []
-  );
-  const [roomOptions, setRoomOptions] = useState([]);
+  //TODO
+  const [accommodationOptions, setAccommodationOptions] = useState([
+    { value: "Room Only", label: "Room Only" },
+    { value: "Only Breakfast", label: "Only Breakfast" },
+    { value: "Breakfast and Dinner", label: "Breakfast and Dinner" },
+    { value: "All Inclusive", label: "All Inclusive" },
+    { value: "All Inclusive without Alcohol", label: "All Inclusive without Alcohol" },
+  ]);
+  const [selectedAccommodationType, setSelectedAccommodationType] = useState(null);
+  const [roomOptions, setRoomOptions] = useState([
+    { value: "Standard", label: "Standard" },
+    { value: "Large", label: "Large" },
+    { value: "Deluxe", label: "Deluxe" },
+    { value: "Presidential", label: "Presidential" },
+  ]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
@@ -40,18 +50,6 @@ const HotelDetail = () => {
       .get(`${process.env.REACT_APP_BASE_URL}/hotel/${id}`)
       .then((response) => {
         setHotelData(response.data);
-        setAccommodationOptions(
-          response.data.accommodationTypes.map((type) => ({
-            value: type.name,
-            label: type.name,
-          }))
-        );
-        setRoomOptions(
-          response.data.rooms.map((room) => ({
-            value: room.type,
-            label: room.type,
-          }))
-        );
         setRating(response.data.rating); // Otelin rating değerini set et
       })
       .catch((error) => console.error("Error fetching hotel data:", error));
@@ -68,18 +66,16 @@ const HotelDetail = () => {
     );
   };
 
-  const handleAccommodationSelection = (selectedOptions) => {
-    setSelectedAccommodationTypes(
-      selectedOptions.map((option) => option.value)
-    );
+  const handleAccommodationSelection = (selectedOption) => {
+    setSelectedAccommodationType(selectedOption.value);
   };
 
   const handleConfirmation = () => {
-    if (selectedRoom && selectedAccommodationTypes.length > 0) {
+    if (selectedRoom && selectedAccommodationType) {
       axios
         .post(`${process.env.REACT_APP_BASE_URL}/calculateTotal`, {
           roomType: selectedRoom,
-          accommodationTypes: selectedAccommodationTypes,
+          accommodationType: selectedAccommodationType,
         })
         .then((response) => {
           setTotalAmount(response.data.totalAmount);
@@ -89,11 +85,15 @@ const HotelDetail = () => {
           console.error("Error calculating total amount:", error)
         );
     } else {
-      alert("Please select both a room and at least one accommodation type.");
+      alert("Please select both a room and an accommodation type.");
     }
   };
 
   const handlePayment = () => {
+    if (!user) {
+      alert("You must be logged in to proceed to payment.");
+      return;
+    }
     if (isConfirmed) {
       setIsPaymentModalOpen(true);
     } else {
@@ -194,12 +194,9 @@ const HotelDetail = () => {
         <h2>Accommodation Choice</h2>
         <Select
           name="accommodationType"
-          className="filter-multi-select"
+          className="filter-single-select"
           options={accommodationOptions}
-          isMulti
-          value={selectedAccommodationTypes.map((type) =>
-            accommodationOptions.find((option) => option.value === type)
-          )}
+          value={accommodationOptions.find((option) => option.value === selectedAccommodationType)}
           onChange={handleAccommodationSelection}
           placeholder="Accommodation Type"
         />
@@ -226,8 +223,7 @@ const HotelDetail = () => {
               Jacuzzi: {selectedRoomDetails.jacuzzi ? "Yes" : "No"} <br />
               Balcony: {selectedRoomDetails.balcony ? "Yes" : "No"} <br />
               Mini bar: {selectedRoomDetails.miniBar ? "Yes" : "No"} <br />
-              Air Conditioning:{" "}
-              {selectedRoomDetails.airConditioning ? "Yes" : "No"}
+              Air Conditioning: {selectedRoomDetails.airConditioning ? "Yes" : "No"}
             </div>
           </div>
         )}
@@ -235,7 +231,10 @@ const HotelDetail = () => {
 
       <footer>
         <p>Total Amount: {totalAmount}$</p>
-        <button onClick={handleConfirmation}>Confirm Selection</button>
+        <button           onClick={handleConfirmation}
+        >
+          Confirm Selection
+        </button>
         <button onClick={handlePayment} disabled={!isConfirmed}>
           Go to Payment
         </button>

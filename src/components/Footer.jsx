@@ -18,15 +18,16 @@ const Footer = () => {
     <footer className={`footer ${isHomePage ? 'footer-home' : 'footer-other'}`}>
       <div className="footer-left">
       </div>
+      <div className="about-us">
+          <p>About Us</p>
+        </div>
       <div className="footer-right">
         <div className="social-links">
           <SocialIcon url="https://twitter.com" />
           <SocialIcon url="https://instagram.com" />
           <SocialIcon url="https://linkedin.com" />
         </div>
-        <div className="about-us">
-          <p>About Us</p>
-        </div>
+
       </div>
       {showKVKK && (
         <div className="kvkk-popup">
