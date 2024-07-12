@@ -10,6 +10,7 @@ import { FaStar } from "react-icons/fa";
 Modal.setAppElement("#root");
 
 const HotelDetail = () => {
+  const {availableBeds, setavailableBeds} = useState(1);
   const { user, isAdmin } = useAuth();
   const [hotelData, setHotelData] = useState({});
   const [guests, setGuests] = useState([
@@ -27,20 +28,20 @@ const HotelDetail = () => {
   ]);
   const [selectedAccommodationType, setSelectedAccommodationType] = useState(null);
   const [roomOptions, setRoomOptions] = useState([
-    { value: "Standard", label: "Standard" },
+    { value: "standard", label: "Standard" },
     { value: "Large", label: "Large" },
-    { value: "Deluxe", label: "Deluxe" },
-    { value: "Presidential", label: "Presidential" },
+    // { value: "Deluxe", label: "Deluxe" },
+    // { value: "Presidential", label: "Presidential" },
   ]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [rating, setRating] = useState(0);
   const [paymentDetails, setPaymentDetails] = useState({
-    cardOwner: "",
-    cardNumber: "",
-    expiryDate: "",
-    cvc: "",
+    ownerName: "",
+    cardNo: "",
+    expDate: "",
+    cvv: ""
   });
 
   let { id } = useParams();
@@ -49,21 +50,40 @@ const HotelDetail = () => {
     axios
       .get(`${process.env.REACT_APP_BASE_URL}/hotel/${id}`)
       .then((response) => {
-        setHotelData(response.data);
+        //setHotelData(response.data);
+        setHotelData({
+          ...response.data,
+          rooms:[
+            {
+              roomType:  "standard",
+              bedNo: 2           
+            },
+            {
+              roomType:  "Large",
+              bedNo: 3         
+            }
+          ]
+        })
         setRating(response.data.rating); // Otelin rating değerini set et
       })
       .catch((error) => console.error("Error fetching hotel data:", error));
   }, [id]);
 
   const handleRoomSelection = (selectedOption) => {
+    console.log(hotelData)
+    // if(!hotelData.rooms){
+    //   return
+    // }
     const room = hotelData.rooms.find(
-      (room) => room.type === selectedOption.value
+      (room) => room.roomType === selectedOption.value
     );
     setSelectedRoom(selectedOption.value);
     setSelectedRoomDetails(room);
     setGuests(
-      new Array(room.beds).fill({ name: "", surname: "", dob: "", id: "" })
+      new Array(room.bedNo).fill({ name: "", surname: "", dob: "", id: "" })
     );
+    console.log(guests)
+   // setavailableBeds(room.bedNo);
   };
 
   const handleAccommodationSelection = (selectedOption) => {
@@ -71,14 +91,12 @@ const HotelDetail = () => {
   };
 
   const handleConfirmation = () => {
+    console.log(selectedRoom,selectedAccommodationType)
     if (selectedRoom && selectedAccommodationType) {
       axios
-        .post(`${process.env.REACT_APP_BASE_URL}/calculateTotal`, {
-          roomType: selectedRoom,
-          accommodationType: selectedAccommodationType,
-        })
+        .get(`${process.env.REACT_APP_BASE_URL}/hotel/offer?id=${hotelData.hotel_id}&roomType=${selectedRoom}` )
         .then((response) => {
-          setTotalAmount(response.data.totalAmount);
+          setTotalAmount(response.data);
           setIsConfirmed(true);
         })
         .catch((error) =>
@@ -103,8 +121,9 @@ const HotelDetail = () => {
 
   const submitPayment = () => {
     axios
-      .post("/processPayment", {
-        amount: totalAmount,
+      .post(`${process.env.REACT_APP_BASE_URL}/payment`, {
+        price: totalAmount,
+        hotelName: hotelData.name,
         paymentDetails,
       })
       .then((response) => {
@@ -231,7 +250,7 @@ const HotelDetail = () => {
 
       <footer>
         <p>Total Amount: {totalAmount}$</p>
-        <button           onClick={handleConfirmation}
+        <button onClick={handleConfirmation}
         >
           Confirm Selection
         </button>
@@ -255,7 +274,7 @@ const HotelDetail = () => {
             onChange={(e) =>
               setPaymentDetails({
                 ...paymentDetails,
-                cardOwner: e.target.value,
+                ownerName: e.target.value,
               })
             }
           />
@@ -266,7 +285,7 @@ const HotelDetail = () => {
             onChange={(e) =>
               setPaymentDetails({
                 ...paymentDetails,
-                cardNumber: e.target.value,
+                cardNo: e.target.value,
               })
             }
           />
@@ -277,7 +296,7 @@ const HotelDetail = () => {
             onChange={(e) =>
               setPaymentDetails({
                 ...paymentDetails,
-                expiryDate: e.target.value,
+                expDate: e.target.value,
               })
             }
           />
@@ -286,7 +305,7 @@ const HotelDetail = () => {
             placeholder="CVC/CVV"
             value={paymentDetails.cvc}
             onChange={(e) =>
-              setPaymentDetails({ ...paymentDetails, cvc: e.target.value })
+              setPaymentDetails({ ...paymentDetails, cvv: e.target.value })
             }
           />
         </div>

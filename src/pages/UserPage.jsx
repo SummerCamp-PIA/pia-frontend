@@ -14,12 +14,12 @@ const UserPage = () => {
 
   useEffect(() => {
     // Fetch user information
-    axios.get('http://localhost:8080/userInfo')
+    axios.get('http://localhost:8080/user')
       .then(response => setUserInfo(response.data))
       .catch(error => console.error('Error fetching user info:', error));
 
     // Fetch user reservations
-    axios.get('http://localhost:8080/userReservations')
+    axios.get('http://localhost:8080/reservations')
       .then(response => setReservations(response.data))
       .catch(error => console.error('Error fetching reservations:', error));
   }, []);
